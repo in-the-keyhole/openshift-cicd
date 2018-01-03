@@ -17,7 +17,7 @@ parameters:
   description: The source Ref for the application
   displayName: Source Ref
   required: true
-  value: master
+  value: openshift-cicd
 - description: Github trigger secret.  A difficult to guess string encoded as part of the webhook URL.  Not encrypted.
   displayName: GitHub Webhook Secret
   from: '[a-zA-Z0-9]{40}'
