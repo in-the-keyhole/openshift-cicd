@@ -73,7 +73,7 @@ The rest of this documentation assumes you run command in the project cicd. To e
 1. [Jenkins](https://github.com/in-the-keyhole/openshift-jenkins-s2i)
 1. [SonarQube](https://github.com/OWASP/sonarqube)
 
-Note: Arnaud Deprez also included Nexus 3. I had not planned on doing that 
+Note: Arnaud Deprez also included Nexus 3. This is worth considering 
 [Nexus 3](https://github.com/arnaud-deprez/nexus3-docker)
 
 HT: https://github.com/arnaud-deprez/cicd-openshift/
