@@ -8,6 +8,10 @@
 **DockerHub**
 > DockerHub contains a regularly updated version of SonarQube containing the latest plugins for SAST scanning (find-sec-bugs), mutation testing (sonar-pitest) and third-party-dependency monitoring (dependency-check). https://hub.docker.com/r/owasp/sonarqube/
 
+**Openshift project**
+> This is the default project that comes with Openshift Origin. We use the base Jenkins image to create our customized Jenkins image
+It contains images and templates supported by RedHat.
+
 **my-openshift project**
 > The idea of this project is to mimic what is Openshift project but for our specific needs. It will contains base image, templates, and secrets for private registry.
 
