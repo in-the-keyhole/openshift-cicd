@@ -67,8 +67,11 @@ The rest of this documentation assumes you run command in the project cicd. To e
 #### Components installation
 
 1. [Jenkins](https://github.com/in-the-keyhole/openshift-jenkins-s2i)
-1. [Nexus 3](https://github.com/arnaud-deprez/nexus3-docker)
+1. 
 1. [SonarQube](https://github.com/arnaud-deprez/sonarqube-docker)
+
+Note: Arnaud Deprez also included Nexus 3. I had not planned on doing that 
+[Nexus 3](https://github.com/arnaud-deprez/nexus3-docker)
 
 HT: https://github.com/arnaud-deprez/cicd-openshift/
 
