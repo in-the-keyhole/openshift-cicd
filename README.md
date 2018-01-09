@@ -16,15 +16,15 @@ It contains images and templates supported by RedHat.
 > The idea of this project is to mimic what is Openshift project but for our specific needs. It will contains base image, templates, and secrets for private registry.
 
 **Dev project**
-> Dev project is where the released image for each cell will be pushed and tagged from each cell project
-when developer feel confident with.
+> The Dev project is where a released build image will be pushed and tagged when it is ready for integration. 
 This project will also be used by developers to make some tests in an integrated environment.
 
-**Staging project**
-> This is where business e2e tests are run. If tests passed, the cell can be promoted to OPT.
+Regarding Shared Service images in the Dev Environment, Policy must be decided to balance the needs of Shared Service Consumers (needing fewer, more stable versions) and Shared Service Providers under development (need to deploy newer versions). Since these are images and not live processes, the Policy can simply stipulate that 1-3 stable images are maintained along with the LATEST (i.e. SNAPSHOT) image
 
-**Prod project**
-> This project will be used for user acceptance before going to OPS.
+**Staging project**
+> This is where Business Facing Tests, Contract Tests, and other End-To-End tests are run. If tests passed, the image can be promoted. Policy must be decided regarding a promoted image will be deployed to production. This decision is often based on the quality of the automated tests.
+
+
 
 ## Setup
 
