@@ -1,16 +1,15 @@
-## CI/CD architecture in Openshift
+## Reference OpenShift CI/CD architecture
 
-Application in Openshift will be segregated in many projects, each project is isolated from other.
+![CI/CD Architecture](http://www.plantuml.com/plantuml/svg/ZLFBJiCm4BpdArQzHxsZKhLgfG8NG3rmG1pyM59Jl-IiArM8VyTsquP45U23bPrPxuntdKLBB50qkYBdWHnmH-GCI1LGa7AsQlVAUXQO0S_4dZMufQD6o7ILDsQR53QAuBM2RituV9E0WDxDfdn-mM_JkWGrF7gqxKwz4n0QhnbX-uFTkXW4Wd0I2_fMzbvIEh77i8jyABmky5talog_BBTFIS6oy1mvWZBfOfsAq2vAcBYpkLhes1A62NoMZ94D9esoGmlzlPQ5zC5zfFpV36tGOc1Q7u4TcDACwyvK-qVIi7FZ7WabvD3RwdwwMl_7qGFQDFdXGBfsNHy77aP8UbgDiiq8JTAoAbX-CxEwxZfu0x4zLUu7UuqznPafb-k94jRrF3j9C8zAowb4hzrno7U-KaxoOXoDZcU38ovNh8DgTZGudZuAVKOkALs9p7zL2xGo_M3V "OpenShift CI/CD Architecture")
 
-![CI/CD Architecture](http://www.plantuml.com/plantuml/svg/ZLF9JiCm4BtdAwpUezvHgOfQYKL2W7hWW3Xu6HBJU94pHeeG_yxOf8i3gl31ohmtdlTcxAnwv06ZwIfqdg5ZmY4wmvGE854xM_KxRJqFt33FvOutiCMX0vReActSDXGs6jbBnSQr4Cjh0W9ujvYBvG6_f7K8QlRWmVQjVaE6O7p74VeJTkjYaC2aKv3HrxmV9PMJEmXj5ANm9iCtKPnLVhxQFfA2vU4f2c3QK6EZYknSL6pczkPgsSKU8SpOPywOs313gNy_dFJbWtkdp7DMA3-hzoLMJcJQkzHIbRBhs_bwyn-zEx1qe-MWnp7yFMRuc23qP1fjcmbAqghAM7eBYxfEaxbWiVyfUxojNnG52Siz7T4SrlKo6I1OHDsfkGBVkQ7aHpkKGnQCmydnv6l2fOfrq4sBnN7woFGUEQIC9HB_LQt0AlfVlW40 "OpenShift CI/CD Architecture")
+**Git Repo**
+> The Git repo will contain the Keyhole source code, along with the OpenShift templates used to create the Jenkins image and the other OpenShift artifacts (https://github.com/in-the-keyhole/openshift-cicd)
 
-**Openshift project**
-> This is the default project that comes by default with a classic Openshift installation.
-It contains images and templates supported by RedHat.
+**DockerHub**
+> DockerHub contains a regularly updated version of SonarQube containing the latest plugins for SAST scanning (find-sec-bugs), mutation testing (sonar-pitest) and third-party-dependency monitoring (dependency-check). https://hub.docker.com/r/owasp/sonarqube/
 
-**My-Openshift project**
-> The idea of this project is to mimic what is Openshift project but for our specific needs.
-It will contains base image, templates, and secrets for private registry.
+**my-openshift project**
+> The idea of this project is to mimic what is Openshift project but for our specific needs. It will contains base image, templates, and secrets for private registry.
 
 **Dev project**
 > Dev project is where the released image for each cell will be pushed and tagged from each cell project
@@ -37,11 +36,9 @@ oc secrets link default my-registry --for=pull
 oc secrets link builder my-registry
 ```
 
-Then when we want to import an image from our private registry, we will use the reference policy `local`, so other pod will not fetch image
-from it directly, instead the image will be cached in the openshift internal registry and the other pod will retrieve their image from it.
+Then when we want to import an image from our private registry, we will use the reference policy `local`, so other pods will not fetch image from it directly. Instead the image will be cached in the openshift internal registry and the other pod will retrieve their image from it.
 
-This configuration allow us to not provide docker secret in each project and so we can enforce which service account has the
-right to pull an image from our private registry without sharing the secret in every project.
+This configuration allow us to not provide docker secrets in each project and so we can enforce which service account has the right to pull an image from our private registry without sharing the secret in every project.
 
 ```sh
 oc import-image ${image}:${version} --from=${image}:${version} -n my-openshift -reference-policy=local --confirm
@@ -49,7 +46,7 @@ oc import-image ${image}:${version} --from=${image}:${version} -n my-openshift -
 
 Once we have imported the image, we have to allow other project to pull image from the `my-openshift` project.
 
-To simplify this management, we can also add the ability to all service account in project `project-a` to pull image from project `my-openshift`:
+To simplify this management, we can also add the ability to all service accounts in project `project-a` to pull image from project `my-openshift`:
 
 ```sh
 oc policy add-role-to-group system:image-puller system:serviceaccounts:project-a -n my-openshift
@@ -57,7 +54,7 @@ oc policy add-role-to-group system:image-puller system:serviceaccounts:project-a
 
 ### CI/CD project
 
-We will create a cicd project to install our Jenkins, Nexus and SonarQube and whatever else is necessary for our CI/CD infrastructure.
+We will create a cicd project to install our Jenkins, SonarQube and whatever else is necessary for our CI/CD infrastructure.
 The cicd project should be able to retrieve image from this project.
 
 ```sh
@@ -72,3 +69,5 @@ The rest of this documentation assumes you run command in the project cicd. To e
 1. [Jenkins](https://github.com/arnaud-deprez/jenkins-docker-openshift)
 1. [Nexus 3](https://github.com/arnaud-deprez/nexus3-docker)
 1. [SonarQube](https://github.com/arnaud-deprez/sonarqube-docker)
+
+HT: https://github.com/arnaud-deprez/cicd-openshift/
