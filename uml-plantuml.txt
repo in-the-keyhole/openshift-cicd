@@ -1,0 +1,51 @@
+@startuml
+top to bottom direction
+skinparam packageStyle rect
+rectangle git [
+        <b>Git repo</b>
+        ====
+        - Openshift templates
+        - Source code
+    ]
+    rectangle dockerhub [
+        <b>DockerHub</b>
+        ====
+        - OWASP SonarQube image
+    ]
+cloud "openshift-cluster" {
+    
+    rectangle openshift [
+        <b>Openshift project</b>
+        ====
+        - OpenShift images
+        - OpenShift templates
+    ]
+    rectangle my [
+        <b>my_openshift project</b>
+        ====
+        - my images
+        - my templates
+    ]
+    rectangle cicd [
+        <b>CI/CD project</b>
+        ====
+        - Jenkins
+        - SonarQube
+    ]
+    rectangle dev
+    rectangle staging
+    rectangle prod
+
+    git <-- my : use
+    dockerhub <-- my : use
+    my <-- cicd : use
+    openshift <-- cicd : use
+    cicd --> dev : build/deploy
+    cicd --> staging : promote
+    cicd --> prod : promote
+    dev -right-> staging : tag
+    staging -right-> prod : tag
+}
+@enduml
+
+http://www.plantuml.com/plantuml/uml/bLFBJiCm4BpdAopkKU-eL4MjnEC2A0SE2277NbBJ-25dZLGX_fsrIHESLWLyiB8pQy_iUhFia7iCkYtGEeQMrHRHQYQL1u7AcgBRAkEuvvevBhQyWGftBR185t7Zfg6mKSYU2jQlURsu8i23i_DPlHZm2rf3KB8x1wRRg5Ta2Dgr7A7xmLOsU05CM0a9VKxxA2cjs8BVX3eNNYVuEjGdbHylgtjICDm_X1gOqbHOho9Q6oGxitjpfMX3X-3Fs4VAcDWOyd8ROstEspVA_gqHLKfEHhgZLDwZQJVqBjVNknVx7mjq_a2RiDEYGWcPowvkPglrN_HkmT1WvU_TlyRnruRt2KAJsoZJJ52IbaN2uaZEorJ5EGlTzxNZq1nG54GirJIYOnEFa2aioqLqHt0TL2jd4bnhTpdVUwKSygSjJev7qnCktbXwrMmmEquVYTuZGqf_HUG_YoKOIV_q5m00
