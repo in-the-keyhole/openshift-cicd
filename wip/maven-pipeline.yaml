@@ -7,12 +7,12 @@ parameters:
   description: The name assigned to all of the application objects defined in this template.
   displayName: Application Name
   required: true
-  value: openshift-jee-sample
+  value: khs-employee-service
 - name: GIT_SOURCE_URL
   description: The source URL for the application
   displayName: Source URL
   required: true
-  value: https://github.com/openshift/openshift-jee-sample.git
+  value: https://github.com/in-the-keyhole/khs-employee-service.git
 - name: GIT_SOURCE_REF
   description: The source Ref for the application
   displayName: Source Ref
@@ -84,17 +84,45 @@ objects:
                     project = env.PROJECT_NAME
                   }
                 }
-
                 node("maven") {
+                  def mvnCmd = "mvn -s configuration/cicd-settings.xml"
                   stage("Checkout") {
                     git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
                   }
-                  stage("Build WAR") {
-                    sh "mvn clean package -Popenshift"
+                  stage('Build and Unit Test') {
+                    sh "${mvnCmd} clean package -Popenshift"
+                    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])                    
                     stash name:"war", includes:"target/ROOT.war"
                   }
+                  stage ('Mutation Test and Analysis') {
+                    parallel (
+                      'Mutation Test': {
+                        #TBD
+                      },
+                      'Static Analysis': {
+                        withSonarQubeEnv('My SonarQube Server') {
+                          // requires SonarQube Scanner for Maven 3.2+
+                          sh '${mvnCmd} org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
+                        }                      
+                        #sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -DskipTests=true"
+                      }
+                    )
+                  }
+                  
+                  // note: does not need to occupy a node
+                  stage("Quality Gate"){
+                    timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+                      def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                      if (qg.status != 'OK') {
+                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                      }
+                    }
+                  }     
+                  stage ('Push to Nexus') {
+                    sh "${mvnCmd} deploy -DskipTests=true"
+                  }
                 }
-
+                
                 node {
                   stage("Build Image") {
                     unstash name:"war"

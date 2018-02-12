@@ -1,0 +1,17 @@
+oc login -u system:admin
+oc new-project cicd
+oc new-project dev 
+oc new-project stage
+
+oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n dev
+oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n stage
+oc policy can-i edit system:serviceaccount:cicd:jenkins
+
+oc project cicd
+oc new-app jenkins-ephemeral
+
+oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml --param=SONARQUBE_VERSION=6.7 --param=SONAR_MAX_MEMORY=1Gi
+
+
+# cheat
+?oc policy add-role-to-user edit developer:cicd:jenkins
