@@ -81,14 +81,12 @@ oc policy add-role-to-group system:image-puller system:serviceaccounts:project-a
 
 
 
-#### Components installation
+#### Docker Image maintenance
 
-1. [Jenkins](https://github.com/in-the-keyhole/openshift-jenkins-s2i)
+1. [Create Custom Jenkins Docker image](https://github.com/in-the-keyhole/openshift-jenkins-s2i)
 1. [SonarQube](https://github.com/OWASP/sonarqube)
-1. [PACT]
+1. [Build PACT Docker image](https://github.com/in-the-keyhole/openshift-cicd/images/pact-s2i.md)
 
 if necessary, also install [Nexus 3](https://github.com/arnaud-deprez/nexus3-docker)
-
-HT: https://github.com/arnaud-deprez/cicd-openshift/
 
 To edit the diagram, use [PlantUML](http://www.plantuml.com/plantuml/uml/bLFBJiCm4BpdAopkKU-eL4MjnEC2A0SE2277NbBJ-25dZLGX_fsrIHESLWLyiB8pQy_iUhFia7iCkYtGEeQMrHRHQYQL1u7AcgBRAkEuvvevBhQyWGftBR185t7Zfg6mKSYU2jQlURsu8i23i_DPlHZm2rf3KB8x1wRRg5Ta2Dgr7A7xmLOsU05CM0a9VKxxA2cjs8BVX3eNNYVuEjGdbHylgtjICDm_X1gOqbHOho9Q6oGxitjpfMX3X-3Fs4VAcDWOyd8ROstEspVA_gqHLKfEHhgZLDwZQJVqBjVNknVx7mjq_a2RiDEYGWcPowvkPglrN_HkmT1WvU_TlyRnruRt2KAJsoZJJ52IbaN2uaZEorJ5EGlTzxNZq1nG54GirJIYOnEFa2aioqLqHt0TL2jd4bnhTpdVUwKSygSjJev7qnCktbXwrMmmEquVYTuZGqf_HUG_YoKOIV_q5m00)
