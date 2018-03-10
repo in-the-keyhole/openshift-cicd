@@ -3,14 +3,9 @@
 oc login -u system:admin
 ```
 
-##### 2. Build PACT-server docker image
+##### 2. Create Jenkins, SonarQube and PACT servers 
 ```sh
-s2i ... (TODO: update with s2i command to build PACT. Jaime did it)
-```
-
-##### 3. Create Jenkins, SonarQube and PACT servers 
-```sh
-oc new-app jenkins-ephemeral (TODO: use custom image)
+oc new-app jenkins-ephemeral (TODO: update to use custom image)
 oc describe sa jenkins
 
 oc new-app -f https://github.com/in-the-keyhole/openshift-cicd/templates/sonarqube-template.yaml --param=SONARQUBE_VERSION=6.7 --param=SONAR_MAX_MEMORY=1Gi
@@ -20,14 +15,14 @@ oc new-app -f https://github.com/in-the-keyhole/openshift-cicd/templates/pact-se
 oc describe sa sonarqube
 ```
 
-##### 4. Create Openshift projects 
+##### 3. Create Openshift projects 
 ```sh
 oc new-project cicd
 oc new-project dev 
 oc new-project stage
 ```
 
-##### 5. and grant permissions 
+##### 4. and grant permissions 
 Note: the format for *add-role-to-user* `system:serviceaccount:PROJECT:SERVICE-ACCOUNT-NAME`
 
 ```sh
