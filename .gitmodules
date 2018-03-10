@@ -1,0 +1,15 @@
+[submodule "jenkins-docker-openshift"]
+	path = jenkins-docker-openshift
+	url = https://github.com/in-the-keyhole/openshift-jenkins-s2i.git
+[submodule "sonarqube-docker"]
+	path = sonarqube-docker
+	url = https://github.com/arnaud-deprez/sonarqube-docker.git
+[submodule "pact-docker"]
+	path = path-docker
+	url = https://github.com/arnaud-deprez/sonarqube-docker.git	
+[submodule "selenium-openshift-templates"]
+	path = selenium-openshift-templates
+	url = https://github.com/arnaud-deprez/selenium-openshift-templates.git
+[submodule "nexus3-docker"]
+	path = nexus3-docker
+	url = https://github.com/arnaud-deprez/nexus3-docker.git	

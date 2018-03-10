@@ -1,0 +1,189 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: null
+    labels:
+      app: pact-broker
+    name: pact-broker
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: pact-broker:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: /pact_broker
+      git:
+        ref: master
+        uri: https://github.com/DiUS/pact_broker-docker.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: ruby:2.3
+          namespace: openshift
+      type: Source
+    triggers:
+    - generic:
+        secret: b3d97b88cd5a37bc
+      type: Generic
+    - github:
+        secret: 2c5fe059efd8b5f0
+      type: GitHub
+    - imageChange: {}
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: pact-broker
+    name: pact-broker
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations: null
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: pact-broker
+    name: pact-broker
+  spec:
+    replicas: 1
+    selector:
+      deploymentconfig: pact-broker
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: pact-broker
+          deploymentconfig: pact-broker
+      spec:
+        containers:
+        - env:
+          - name: PACT_BROKER_DATABASE_USERNAME
+            value: postgres
+          - name: PACT_BROKER_DATABASE_PASSWORD
+            value: postgres
+          - name: PACT_BROKER_DATABASE_HOST
+            value: postgresql.pact-broker.svc
+          - name: PACT_BROKER_DATABASE_NAME
+            value: postgres
+          image: 172.30.1.1:5000/pact-broker/pact-broker@sha256:da2e1386b3a1c5e58776b415f43008a9522cdbd3ff474f04b05859c0b9673f82
+          imagePullPolicy: Always
+          name: pact-broker
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - pact-broker
+        from:
+          kind: ImageStreamTag
+          name: pact-broker:latest
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+      openshift.io/host.generated: "true"
+    creationTimestamp: null
+    labels:
+      app: pact-broker
+    name: pact-broker
+  spec:
+    port:
+      targetPort: 8080-tcp
+    to:
+      kind: Service
+      name: pact-broker
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: 2018-03-09T02:45:14Z
+        status: "True"
+        type: Admitted
+      routerName: router
+      wildcardPolicy: None
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: null
+    labels:
+      app: pact-broker
+    name: pact-broker
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deploymentconfig: pact-broker
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}

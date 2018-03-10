@@ -1,3 +1,4 @@
 Jenkins 
-	- update source image to be more recent than version 2.46.3
+	- set timezone to Central (?oc env TZ=America/Chicago)
+	- figure out permission issue - not able to log in to Jenkins using Openshift creds (seems to work if Jenkins created in project myproject)
 	

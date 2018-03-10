@@ -3,12 +3,29 @@ oc new-project cicd
 oc new-project dev 
 oc new-project stage
 
+
+oc new-app jenkins-ephemeral
+oc describe sa jenkins
+
+oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml --param=SONARQUBE_VERSION=6.7 --param=SONAR_MAX_MEMORY=1Gi
+oc describe sa sonarqube
+
+
+
+#system:serviceaccount:<project>:<service-account-name>
+#to add the view role to the robot service account in the top-secret project:
+#$ oc policy add-role-to-user view system:serviceaccount:top-secret:robot
+#to allow all service accounts in all projects to view resources in the top-secret project:
+#$ oc policy add-role-to-group view system:serviceaccount -n top-secret
 oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n dev
 oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n stage
 oc policy can-i edit system:serviceaccount:cicd:jenkins
+oc describe policyBindings :default -n dev
+
 
 oc project cicd
 oc new-app jenkins-ephemeral
+oc describe sa jenkins
 
 oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml --param=SONARQUBE_VERSION=6.7 --param=SONAR_MAX_MEMORY=1Gi
 
