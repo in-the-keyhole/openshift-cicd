@@ -78,9 +78,6 @@ To simplify this management, we can also add the ability to all service accounts
 oc policy add-role-to-group system:image-puller system:serviceaccounts:project-a -n my-openshift
 ```
 
-
-
-
 #### Docker Image maintenance
 
 1. [Create Custom Jenkins Docker image](https://github.com/in-the-keyhole/openshift-jenkins-s2i)
