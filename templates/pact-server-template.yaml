@@ -103,7 +103,7 @@ items:
           - name: PACT_BROKER_DATABASE_PASSWORD
             value: pactpass
           - name: PACT_BROKER_DATABASE_HOST
-            value: postgresql.pact-broker.svc
+            value: postgresql-96-rhel7.cicd.svc
           - name: PACT_BROKER_DATABASE_NAME
             value: pactdb
           image: 172.30.1.1:5000/pact-broker/pact-broker@sha256:da2e1386b3a1c5e58776b415f43008a9522cdbd3ff474f04b05859c0b9673f82

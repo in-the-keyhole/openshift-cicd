@@ -9,4 +9,7 @@ oc login -u system:admin
 
 #Postgresql
 oc delete all -l app=postgresql-96-rhel7
+
+#PACT broker
+oc delete all -l app=pact-broker
 ```

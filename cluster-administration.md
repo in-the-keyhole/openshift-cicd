@@ -40,10 +40,22 @@ oc new-app -f https://github.com/in-the-keyhole/openshift-cicd/templates/sonarqu
 oc describe sa sonarqube
 
 #Postgres (for Pact Server DB)
-oc new-app registry.access.redhat.com/rhscl/postgresql-96-rhel7 -e POSTGRESQL_USER=pguser -e POSTGRESQL_PASSWORD=pgpass -e POSTGRESQL_DATABASE=pactdb -n cicd
+oc new-app registry.access.redhat.com/rhscl/postgresql-96-rhel7 -e POSTGRESQL_USER=pactuser -e POSTGRESQL_PASSWORD=pactpass -e POSTGRESQL_DATABASE=pactdb -n cicd
+
+#verify postgresql
+oc status 
+oc describe po postgresql-96-rhel7
+oc describe svc postgresql-96-rhel7
 
 #Pact Server
-oc create -f https://github.com/in-the-keyhole/openshift-cicd/templates/pact-server-template.yaml -n cicd
+oc create -f https://raw.githubusercontent.com/in-the-keyhole/openshift-cicd/master/templates/pact-server-template.yaml?token=ABVra3oqKy2LfpP9VpomBultugGpPZdGks5artk0wA%3D%3D -n cicd
+
+#verify pact server
+oc status 
+oc get po  | grep pact-broker
+(select the pod without "build" in the name. In one case, it was pact-broker-1-k2z5d
+oc logs pact-broker-1-k2z5d -c pact-broker
+oc describe po pact-broker-1-k2z5d
 ```
 
 
