@@ -1,5 +1,5 @@
-[submodule "jenkins-docker-openshift"]
-	path = jenkins-docker-openshift
+[submodule "openshift-jenkins-s2i"]
+	path = openshift-jenkins-s2i
 	url = https://github.com/in-the-keyhole/openshift-jenkins-s2i.git
 [submodule "sonarqube-docker"]
 	path = sonarqube-docker

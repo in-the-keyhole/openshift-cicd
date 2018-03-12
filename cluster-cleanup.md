@@ -7,6 +7,9 @@ oc login -u system:admin
 
 ```sh
 
+#SonarQube
+oc delete all -l app=sonarqube
+
 #Postgresql
 oc delete all -l app=postgresql-96-rhel7
 

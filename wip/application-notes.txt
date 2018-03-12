@@ -1,6 +1,0 @@
-oc project myproject
-
-cd ~/git/openshift-cicd/wip
-oc new-app -f maven-pipeline.yaml 
-TODO: show parameterized example
-oc start-build khs-employee-service
