@@ -37,6 +37,7 @@ oc new-app jenkins-ephemeral (TODO: update to use custom image)
 oc describe sa jenkins
 
 
+#SonarQube (WIP)
 oc new-build https://github.com/in-the-keyhole/openshift-sonarqube-s2i.git \
      --strategy=docker \
      --to=sonarqube-ocp:6.7-alpine \
